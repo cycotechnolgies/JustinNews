@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "327392965469",
+    "project_id": "justin-news-app",
+    "storage_bucket": "justin-news-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327392965469:android:9ff6a123afa07cc4626eb4",
+        "android_client_info": {
+          "package_name": "com.cycotechnologies.justinnews"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkyPLFmOrE3R3uC19unAErhnIVo-mJZ3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

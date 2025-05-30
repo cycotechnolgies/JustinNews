@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Brand Colors -->
+    <color name="colorPrimary">#134BC9</color>         <!-- Primary Blue -->
+    <color name="colorSecondary">#FFD900</color>       <!-- Accent Yellow -->
+
+    <!-- Surface & Background -->
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorSurface">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="colorOnPrimary">#FFFFFF</color>       <!-- White text/icons on primary -->
+    <color name="colorOnSecondary">#333333</color>     <!-- Black text/icons on secondary -->
+    <color name="colorOnBackground">#333333</color>
+
+    <!-- Bottom Navigation States -->
+    <color name="navIconActive">#FFFFFF</color>         <!-- Active: 100% White -->
+    <color name="navIconInactive">#99FFFFFF</color>     <!-- Inactive: 60% White -->
+
+
 </resources>

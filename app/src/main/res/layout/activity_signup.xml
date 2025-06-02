@@ -136,7 +136,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/inter_bold"
-        android:text="@string/login"
+        android:text="@string/signup"
         android:textAlignment="center"
         android:textColor="@color/colorOnPrimary"
         android:textColorHighlight="@color/colorOnPrimary"
@@ -194,6 +194,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="1dp"
         tools:ignore="MissingConstraints" />
 
     <TextView

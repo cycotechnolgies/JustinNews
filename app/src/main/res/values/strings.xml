@@ -14,4 +14,8 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="email">Email</string>
+    <string name="login_phrase">Stay Connected. Stay Updated.</string>
+    <string name="newacc">New to JustIn ?</string>
+    <string name="create_account">Create Account</string>
+    <string name="loginGoogle">Login with Google</string>
 </resources>

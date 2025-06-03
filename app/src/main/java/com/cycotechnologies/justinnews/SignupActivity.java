@@ -22,8 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-import com.cycotechnologies.justinnews.validator;
-
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,7 +60,7 @@ public class SignupActivity extends AppCompatActivity {
         emailInput = findViewById(R.id.email_input);
         pwdInput = findViewById(R.id.pwd_input);
         confirmPwdInput = findViewById(R.id.confirm_pwd_input);
-        signupBtn = findViewById(R.id.signupbtn);
+        signupBtn = findViewById(R.id.loginbtn);
 
         loginNow = findViewById(R.id.loginnow);
 

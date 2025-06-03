@@ -43,4 +43,17 @@
         <item name="itemIconTint">@color/bottom_nav_selector</item>
         <item name="itemTextColor">@color/bottom_nav_selector</item>
     </style>
+
+    <style name="ShapeAppearance.App.RoundedCorners" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item> </style>
+
+    <style name="Widget.App.TextInputLayout.FilledBox.Rounded" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxStrokeWidth">0dp</item> <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.RoundedCorners</item>
+    </style>
 </resources>

@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">JustinNews</string>
+    <string name="heading_logo">heading Logo</string>
+    <string name="onboardImage">onboard display image</string>
+    <string name="onboardMassage">Sign in and never miss a moment.</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="signup_phrase">Step into the front row of breaking news</string>
+    <string name="have_accont">Already have an account ?</string>
+    <string name="login_now">Login Now</string>
+    <string name="divider">divider</string>
+    <string name="signup_with_google">Sign up with Google</string>
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="email">Email</string>
+    <string name="login_phrase">Stay Connected. Stay Updated.</string>
+    <string name="newacc">New to JustIn ?</string>
+    <string name="create_account">Create Account</string>
+    <string name="loginGoogle">Login with Google</string>
 </resources>

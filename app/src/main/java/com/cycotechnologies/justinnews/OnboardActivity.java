@@ -2,7 +2,7 @@ package com.cycotechnologies.justinnews;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,29 +10,33 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class SplashActivity extends AppCompatActivity {
+public class OnboardActivity extends AppCompatActivity {
 
-
+    Button btnLogin, btnSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_onboard);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        Intent iHome = new Intent(SplashActivity.this, OnboardActivity.class);
+        btnLogin = findViewById(R.id.gsignupbtn);
+        btnSignup = findViewById(R.id.signupBtn);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(iHome);
-                finish();
-            }
-        }, 4000);
+        btnLogin.setOnClickListener(v->{
+            Intent loginIntent = new Intent(OnboardActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+        });
+
+        btnSignup.setOnClickListener(v->{
+            Intent signupIntent = new Intent(OnboardActivity.this, SignupActivity.class);
+            startActivity(signupIntent);
+        });
+        
     }
 }

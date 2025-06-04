@@ -5,11 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -33,7 +29,7 @@ public class StartActivity extends AppCompatActivity {
         if (!onboardCompleted) {
             startActivity(new Intent(this, OnboardActivity.class));
         } else if (email != null && password != null) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, HomeActivity.class));
         } else {
             startActivity(new Intent(this, LoginActivity.class));
         }

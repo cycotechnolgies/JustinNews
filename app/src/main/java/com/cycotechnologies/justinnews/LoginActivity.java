@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString(PASSWORD_KEY, password);
                             editor.apply();
 
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             finish();
                         }else {
                             new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)

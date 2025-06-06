@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
             return insets;
         });
 
-        Intent iHome = new Intent(SplashActivity.this, OnboardActivity.class);
+        Intent iHome = new Intent(SplashActivity.this, StartActivity.class);
 
         new Handler().postDelayed(new Runnable() {
             @Override

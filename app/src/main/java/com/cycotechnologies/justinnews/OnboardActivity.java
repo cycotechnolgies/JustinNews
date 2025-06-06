@@ -1,6 +1,8 @@
 package com.cycotechnologies.justinnews;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -29,11 +31,23 @@ public class OnboardActivity extends AppCompatActivity {
         btnSignup = findViewById(R.id.signupBtn);
 
         btnLogin.setOnClickListener(v->{
+
+            SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("onboard_completed", true);
+            editor.apply();
+
             Intent loginIntent = new Intent(OnboardActivity.this, LoginActivity.class);
             startActivity(loginIntent);
         });
 
         btnSignup.setOnClickListener(v->{
+
+            SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("onboard_completed", true);
+            editor.apply();
+
             Intent signupIntent = new Intent(OnboardActivity.this, SignupActivity.class);
             startActivity(signupIntent);
         });

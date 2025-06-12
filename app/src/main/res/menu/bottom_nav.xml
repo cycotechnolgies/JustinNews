@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home_tab"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/feature_tab"
+        android:icon="@drawable/ic_news"
+        android:title="Featured" />
+    <item
+        android:title="Saved"
+        android:id="@+id/saved_tab"
+        android:icon="@drawable/ic_saved"
+        />
+    <item
+        android:title="Profile"
+        android:id="@+id/profile_tab"
+        android:icon="@drawable/ic_user"
+        />
+
+</menu>

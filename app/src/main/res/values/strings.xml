@@ -19,4 +19,7 @@
     <string name="create_account">Create Account</string>
     <string name="loginGoogle">Login with Google</string>
     <string name="content_description_media">news image</string>
+    <string name="explore_news">Explore News</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

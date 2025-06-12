@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +13,12 @@
         android:theme="@style/Theme.JustinNews"
         tools:targetApi="31">
         <activity
-            android:name=".NewsAdapter"
+            android:name=".MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity
+            android:name=".NewsForYouAdaptor"
             android:exported="false" />
         <activity
             android:name=".StartActivity"
@@ -36,9 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".HomeActivity"
-            android:exported="true" />
 
         <meta-data
             android:name="preloaded_fonts"

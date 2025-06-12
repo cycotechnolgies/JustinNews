@@ -29,7 +29,7 @@ public class StartActivity extends AppCompatActivity {
         if (!onboardCompleted) {
             startActivity(new Intent(this, OnboardActivity.class));
         } else if (email != null && password != null) {
-            startActivity(new Intent(this, HomeActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         } else {
             startActivity(new Intent(this, LoginActivity.class));
         }

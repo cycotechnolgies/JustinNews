@@ -1,8 +1,11 @@
 package com.cycotechnologies.justinnews;
 import com.google.firebase.firestore.PropertyName;
 
-public class TrendNews {
+import java.io.Serializable;
 
+public class TrendNews implements Serializable {
+
+    private String newsId;
     @PropertyName("Title")
     private String title;
 
@@ -57,5 +60,9 @@ public class TrendNews {
 
     @PropertyName("Catagory")
     public String getCatagory() { return Catagory; }
+
+    public String getNewsId() { return newsId; }
+    public void setNewsId(String newsId) { this.newsId = newsId; }
+
 }
 

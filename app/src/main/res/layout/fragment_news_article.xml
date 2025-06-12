@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/NewsScroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="32dp"
+    android:layout_marginEnd="12dp"
+    tools:context=".NewsArticleFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/rounded_back_button"
+            android:contentDescription="Back"
+            android:src="@drawable/ic_left_arrow"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="16dp"
+            app:tint="@color/colorBackground" />
+
+
+        <ImageView
+            android:id="@+id/detailNewsImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:contentDescription="News Detail Image"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_profile_background" />
+
+        <TextView
+            android:id="@+id/detailNewsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorOnSecondary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="IMF reaches staff-level agreement with Sri Lanka on fourth review" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/detailNewsDate"
+                android:layout_width="0dp"          android:layout_height="wrap_content"
+                android:layout_weight="1"           android:gravity="start|center_vertical" android:textColor="@color/colorOnSecondary"
+                android:textSize="14sp"
+                tools:text="April 25, 2025" />
+
+            <LinearLayout
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"                android:layout_marginStart="0dp">    <ImageButton
+                android:id="@+id/btnLike"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Like"
+                android:src="@drawable/ic_heart" />
+
+                <ImageButton
+                    android:id="@+id/btnSave"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Save"
+                    android:src="@drawable/ic_save" />
+
+                <ImageButton
+                    android:id="@+id/btnShare"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Share"
+                    android:src="@drawable/ic_share" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/detailNewsSummary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:lineSpacingExtra="4dp"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:text="The International Monetary Fund (IMF) staff and the Sri Lankan authorities have reached staff-level agreement on economic policies to conclude the Fourth Review of Sri Lanka’s reform program supported by the IMF’s Extended Fund Facility. Once the review is approved by the IMF Executive Board, Sri Lanka will have access to about US$344 million in financing. The IMF says that program performance remains strong overall and that economic growth is rebounding. Revenue mobilization, reserve accumulation, and structural reforms are..." />
+
+    </LinearLayout>
+
+</ScrollView>

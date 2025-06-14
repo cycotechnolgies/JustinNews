@@ -53,6 +53,13 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
+        signupNow = findViewById(R.id.signupnow);
+
+        signupNow.setOnClickListener(v->{
+            Intent signupIntent = new Intent(LoginActivity.this, SignupActivity.class);
+            startActivity(signupIntent);
+        });
+
         loginBtn.setOnClickListener(v->loginUserAccount());
     }
 

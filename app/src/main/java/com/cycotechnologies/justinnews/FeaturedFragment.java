@@ -1,17 +1,19 @@
-package com.cycotechnologies.justinnews;
+package com.cycotechnologies.justinnews; // Ensure this matches your package name
 
 import android.os.Bundle;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button; // Import Button
+import androidx.cardview.widget.CardView; // Import CardView if cardViewLiked is a CardView
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link FeaturedFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A simple {@link Fragment} subclass for displaying featured news categories.
+ * This fragment handles button clicks for various news categories and navigates
+ * to the CategoryNewsFragment by utilizing the hosting Activity's fragment replacement method.
  */
 public class FeaturedFragment extends Fragment {
 
@@ -60,5 +62,34 @@ public class FeaturedFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_featured, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Initialize buttons using the inflated 'view'
+        Button btnTrending = view.findViewById(R.id.btnTrending);
+        Button btnLocal = view.findViewById(R.id.btnLocal);
+        Button btnWeather = view.findViewById(R.id.btnWeather);
+        Button btnBusiness = view.findViewById(R.id.btnBusiness);
+        Button btnTechnology = view.findViewById(R.id.btnTechnology);
+        Button btnSocial = view.findViewById(R.id.btnSocial);
+        Button btnSports = view.findViewById(R.id.btnSports);
+        Button btnHealth = view.findViewById(R.id.btnHealth);
+        CardView cardViewLiked = view.findViewById(R.id.cardViewLiked); // Assuming it's a CardView
+
+        // Set OnClickListener for each category button
+        btnTrending.setOnClickListener(v -> ((MainActivity) requireActivity()).replaceFragment(CategoryNewsFragment.newInstance("Trending")));
+        btnLocal.setOnClickListener(v -> ((MainActivity) requireActivity()).replaceFragment(CategoryNewsFragment.newInstance("Local")));
+        btnWeather.setOnClickListener(v -> ((MainActivity) requireActivity()).replaceFragment(CategoryNewsFragment.newInstance("Weather")));
+        btnBusiness.setOnClickListener(v -> ((MainActivity) requireActivity()).replaceFragment(CategoryNewsFragment.newInstance("Business")));
+        btnTechnology.setOnClickListener(v -> ((MainActivity) requireActivity()).replaceFragment(CategoryNewsFragment.newInstance("Technology")));
+        btnSocial.setOnClickListener(v -> ((MainActivity) requireActivity()).replaceFragment(CategoryNewsFragment.newInstance("Social")));
+        btnSports.setOnClickListener(v -> ((MainActivity) requireActivity()).replaceFragment(CategoryNewsFragment.newInstance("Sports")));
+        btnHealth.setOnClickListener(v -> ((MainActivity) requireActivity()).replaceFragment(CategoryNewsFragment.newInstance("Health")));
+
+        // Set OnClickListener for the "Liked" CardView
+        cardViewLiked.setOnClickListener(v -> ((MainActivity) requireActivity()).replaceFragment(CategoryNewsFragment.newInstance("Liked")));
     }
 }

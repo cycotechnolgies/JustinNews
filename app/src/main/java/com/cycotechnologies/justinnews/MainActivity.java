@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.cycotechnologies.justinnews.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener {
 
     public static final String SHARED_PREFS = "shared_prefs";
     public static final String EMAIL_KEY = "email_key";
@@ -70,5 +70,10 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_views, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void navigateToAboutUs() {
+        replaceFragment(AboutUsFragment.newInstance());
     }
 }

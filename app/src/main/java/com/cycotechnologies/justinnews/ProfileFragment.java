@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,9 @@ public class ProfileFragment extends Fragment implements EditProfileDialogFragme
     private TextView userEmailTextView;
     private CardView editProfileCard;
     private MaterialButton signOutButton;
+    private CardView aboutUsCard;
+
+    private MainActivity hostActivity;
 
     // Firebase instances
     private FirebaseAuth mAuth;
@@ -50,16 +54,38 @@ public class ProfileFragment extends Fragment implements EditProfileDialogFragme
     public ProfileFragment() {
     }
 
+    public interface OnFragmentInteractionListener {
+        void navigateToAboutUs();
+    }
+
+    private OnFragmentInteractionListener mListener;
+
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         return fragment;
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement ProfileFragment.OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: Fragment created.");
-        // Initialize Firebase instances here
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
     }
@@ -76,6 +102,7 @@ public class ProfileFragment extends Fragment implements EditProfileDialogFragme
         userEmailTextView = view.findViewById(R.id.emailHolder);
         editProfileCard = view.findViewById(R.id.editProfileCard);
         signOutButton = view.findViewById(R.id.signOutButton);
+        aboutUsCard = view.findViewById(R.id.aboutUsCard);
 
         // --- Debugging checks ---
         if (editProfileCard == null) {
@@ -98,6 +125,21 @@ public class ProfileFragment extends Fragment implements EditProfileDialogFragme
         }
         // --- End debugging checks ---
 
+        if (aboutUsCard == null) {
+            Log.e(TAG, "onCreateView: aboutUsCard is null. Check ID in fragment_profile.xml");
+        } else {
+            Log.d(TAG, "onCreateView: aboutUsCard found.");
+            aboutUsCard.setOnClickListener(v -> {
+                Log.d(TAG, "onClick: About Us Card clicked. Requesting navigation to Activity.");
+                if (mListener != null) {
+                    mListener.navigateToAboutUs(); // CALL THIS METHOD ON THE LISTENER
+                } else {
+                    Log.e(TAG, "onClick: mListener is null, cannot navigate to About Us. Activity not implementing interface?");
+                    Toast.makeText(getContext(), "Error navigating to About Us.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
 
         return view;
     }
@@ -111,16 +153,6 @@ public class ProfileFragment extends Fragment implements EditProfileDialogFragme
         if (currentUser == null) {
             Log.d(TAG, "onStart: User not logged in.");
             Toast.makeText(getContext(), "Please log in to view your profile.", Toast.LENGTH_LONG).show();
-            // Optional: Redirect to login activity
-            // If you have a LoginActivity, uncomment and replace
-            /*
-            if (getActivity() != null) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class); // Replace LoginActivity.class
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                getActivity().finish();
-            }
-            */
         } else {
             Log.d(TAG, "onStart: User logged in. Loading profile.");
             // User is logged in, load profile data
@@ -128,10 +160,6 @@ public class ProfileFragment extends Fragment implements EditProfileDialogFragme
         }
     }
 
-    /**
-     * Loads the current user's profile data from Firestore and displays it.
-     * This method should be called on fragment start and after a successful profile update.
-     */
     private void loadUserProfile() {
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
@@ -167,10 +195,6 @@ public class ProfileFragment extends Fragment implements EditProfileDialogFragme
         }
     }
 
-    /**
-     * Shows the EditProfileDialogFragment.
-     * It passes the current name and email to pre-fill the dialog fields.
-     */
     private void showEditProfileDialog() {
         String currentName = userNameTextView.getText().toString();
         String currentEmail = userEmailTextView.getText().toString();
@@ -198,9 +222,6 @@ public class ProfileFragment extends Fragment implements EditProfileDialogFragme
     }
 
     /**
-     * Callback method from EditProfileDialogFragment when the user clicks "Update".
-     * This method handles updating the user's profile in Firebase Firestore.
-     *
      * @param newName The new name entered by the user.
      * @param newEmail The new email entered by the user.
      */
@@ -249,9 +270,7 @@ public class ProfileFragment extends Fragment implements EditProfileDialogFragme
         }
     }
 
-    /**
-     * Handles user sign out.
-     */
+
     private void showLogoutConfirmDialog() {
         Log.d(TAG, "showLogoutConfirmDialog: Displaying logout confirmation dialog.");
         LogoutConfirmDialogFragment dialog = LogoutConfirmDialogFragment.newInstance();
@@ -294,4 +313,5 @@ public class ProfileFragment extends Fragment implements EditProfileDialogFragme
             Log.e(TAG, "onLogoutConfirmed: getActivity() is null, cannot redirect after logout.");
         }
     }
+
 }

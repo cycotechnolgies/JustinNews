@@ -1,9 +1,9 @@
 package com.cycotechnologies.justinnews;
+
 import com.google.firebase.firestore.PropertyName;
+import java.io.Serializable; // Add this import
 
-import java.io.Serializable;
-
-public class NewsForYouItem implements Serializable {
+public class SavedNews extends TrendNews implements Serializable {
 
     private String newsId;
     @PropertyName("Title")
@@ -27,10 +27,10 @@ public class NewsForYouItem implements Serializable {
     @PropertyName("Catagory")
     private String Catagory;
 
-    public NewsForYouItem() {}
+    public SavedNews() {}
 
-    public NewsForYouItem(String title, String subTitle, String summary,
-                          String dateCreated, String imageUrl, boolean trending, String Catagory) {
+    public SavedNews(String title, String subTitle, String summary,
+                     String dateCreated, String imageUrl, boolean trending, String Catagory) {
         this.title = title;
         this.subTitle = subTitle;
         this.summary = summary;
@@ -63,6 +63,4 @@ public class NewsForYouItem implements Serializable {
 
     public String getNewsId() { return newsId; }
     public void setNewsId(String newsId) { this.newsId = newsId; }
-
 }
-

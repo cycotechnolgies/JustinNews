@@ -1,5 +1,6 @@
 package com.cycotechnologies.justinnews;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +28,7 @@ import java.util.List;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnNewsClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,6 +46,8 @@ public class HomeFragment extends Fragment {
     private NewsForYouAdaptor newsForYouAdapter;
     private RecyclerView newsForYouRecyclerView;
     private List<NewsForYouItem> newsForYouList;
+
+    private MainActivity hostActivity;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -72,15 +78,32 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            hostActivity = (MainActivity) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must be hosted by MainActivity");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        hostActivity = null;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false); // Set attachToRoot to false
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         viewPager = view.findViewById(R.id.newsViewPager);
         dotIndicator = view.findViewById(R.id.dotsIndicator);
 
-        trendingAdaptor = new TrendingNewsAdapter(TrendingList, getContext()); // Pass the initialized newsList
+        trendingAdaptor = new TrendingNewsAdapter(TrendingList, getContext(), this);
         viewPager.setAdapter(trendingAdaptor);
 
         viewPager.setPageTransformer((page, position) -> {
@@ -97,6 +120,7 @@ public class HomeFragment extends Fragment {
                     TrendingList.clear();
                     for(QueryDocumentSnapshot doc : querySnapshot){
                         TrendNews news = doc.toObject(TrendNews.class);
+                        news.setNewsId(doc.getId());
                         TrendingList.add(news);
                     }
                     trendingAdaptor.notifyDataSetChanged();
@@ -111,7 +135,7 @@ public class HomeFragment extends Fragment {
         newsForYouRecyclerView = view.findViewById(R.id.newsforyouView);
         newsForYouRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        newsForYouAdapter = new NewsForYouAdaptor(newsForYouList, getContext());
+        newsForYouAdapter = new NewsForYouAdaptor(newsForYouList, getContext(), this);
         newsForYouRecyclerView.setAdapter(newsForYouAdapter);
 
         db.collection("Public_News")
@@ -121,6 +145,7 @@ public class HomeFragment extends Fragment {
                     newsForYouList.clear();
                     for(QueryDocumentSnapshot doc : querySnapshot){
                         NewsForYouItem newsItems = doc.toObject(NewsForYouItem.class);
+                        newsItems.setNewsId(doc.getId());
                         newsForYouList.add(newsItems);
                     }
                     newsForYouAdapter.notifyDataSetChanged();
@@ -130,5 +155,16 @@ public class HomeFragment extends Fragment {
                 );
 
         return view;
+    }
+
+    @Override
+    public void onNewsClick(Serializable newsItem) {
+        if (hostActivity != null) {
+            NewsArticleFragment newsArticleFragment = NewsArticleFragment.newInstance(newsItem);
+
+            hostActivity.replaceFragment(newsArticleFragment);
+        } else {
+            Toast.makeText(getContext(), "Error: Host activity not found.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

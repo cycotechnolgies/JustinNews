@@ -15,7 +15,8 @@
 
     <!-- Bottom Navigation States -->
     <color name="navIconActive">#FFFFFF</color>         <!-- Active: 100% White -->
-    <color name="navIconInactive">#99FFFFFF</color>     <!-- Inactive: 60% White -->
+    <color name="navIconInactive">#99FFFFFF</color>
+    <color name="btngray">#D9D9D9</color>     <!-- Inactive: 60% White -->
 
 
 </resources>

@@ -1,64 +1,208 @@
 package com.cycotechnologies.justinnews;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SavedFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SavedFragment extends Fragment {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class SavedFragment extends Fragment implements OnNewsClickListener {
+
+    private static final String TAG = "SavedNewsFragment";
+
+    private RecyclerView savedNewsRecyclerView;
+    private SavedNewsAdapter savedNewsAdapter;
+    private List<SavedNews> savedNewsList;
+    private TextView noSavedNewsMessage;
+    private ProgressBar progressBar;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+
+    private MainActivity hostActivity;
 
     public SavedFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SavedFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SavedFragment newInstance(String param1, String param2) {
-        SavedFragment fragment = new SavedFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            hostActivity = (MainActivity) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must be hosted by MainActivity");
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_saved, container, false);
+    public void onDetach() {
+        super.onDetach();
+        hostActivity = null;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_saved, container, false);
+
+        savedNewsRecyclerView = view.findViewById(R.id.savedNewsRecyclerView);
+        noSavedNewsMessage = view.findViewById(R.id.noSavedNewsMessage);
+        progressBar = view.findViewById(R.id.progressBar);
+
+        savedNewsList = new ArrayList<>();
+        savedNewsAdapter = new SavedNewsAdapter(savedNewsList, getContext(), this);
+        savedNewsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        savedNewsRecyclerView.setAdapter(savedNewsAdapter);
+
+        if (currentUser == null) {
+            noSavedNewsMessage.setText("Please log in to view your saved news.");
+            noSavedNewsMessage.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getContext(), "You need to log in to see saved news.", Toast.LENGTH_LONG).show();
+        } else {
+            fetchSavedNews();
+        }
+
+        return view;
+    }
+
+    private void fetchSavedNews() {
+        progressBar.setVisibility(View.VISIBLE);
+        noSavedNewsMessage.setVisibility(View.GONE);
+        savedNewsList.clear();
+
+        String userId = currentUser.getUid();
+        Log.d(TAG, "Fetching saved news for user: " + userId);
+
+        db.collection("User").document(userId).collection("savedNews")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        showNoSavedMessage("No saved news found.");
+                        return;
+                    }
+
+                    Set<String> uniqueNewsIds = new HashSet<>();
+                    for (QueryDocumentSnapshot savedNewsDoc : queryDocumentSnapshots) {
+                        String newsId = savedNewsDoc.getString("newsId");
+                        Log.d(TAG, "Found saved newsId: " + newsId);
+                        if (newsId != null) {
+                            uniqueNewsIds.add(newsId);
+                        }
+                    }
+
+                    if (uniqueNewsIds.isEmpty()) {
+                        showNoSavedMessage("No valid news IDs found.");
+                        return;
+                    }
+
+                    List<Task<DocumentSnapshot>> fetchNewsTasks = new ArrayList<>();
+                    for (String newsId : uniqueNewsIds) {
+                        Log.d(TAG, "Fetching details for newsId: " + newsId);
+                        fetchNewsTasks.add(db.collection("Public_News").document(newsId).get());
+                    }
+
+                    Tasks.whenAllSuccess(fetchNewsTasks)
+                            .addOnSuccessListener(results -> {
+                                Map<String, SavedNews> uniqueNewsMap = new HashMap<>();
+                                for (Object result : results) {
+                                    DocumentSnapshot newsDoc = (DocumentSnapshot) result;
+                                    if (newsDoc.exists()) {
+                                        SavedNews news = newsDoc.toObject(SavedNews.class);
+                                        if (news != null) {
+                                            news.setNewsId(newsDoc.getId());
+                                            uniqueNewsMap.put(news.getNewsId(), news);
+                                            Log.d(TAG, "Loaded: " + news.getTitle() + " (ID: " + news.getNewsId() + ")");
+                                        }
+                                    } else {
+                                        Log.w(TAG, "News document not found for ID: " + newsDoc.getId());
+                                    }
+                                }
+
+                                savedNewsList.clear();
+                                savedNewsList.addAll(uniqueNewsMap.values());
+                                progressBar.setVisibility(View.GONE);
+                                noSavedNewsMessage.setVisibility(savedNewsList.isEmpty() ? View.VISIBLE : View.GONE);
+                                savedNewsAdapter.notifyDataSetChanged();
+                            })
+                            .addOnFailureListener(e -> {
+                                showError("Error fetching news details: " + e.getMessage(), e);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    showError("Error fetching saved news list: " + e.getMessage(), e);
+                });
+    }
+
+    private void showNoSavedMessage(String message) {
+        savedNewsList.clear();
+        savedNewsAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+        noSavedNewsMessage.setText(message);
+        noSavedNewsMessage.setVisibility(View.VISIBLE);
+        Log.d(TAG, message);
+    }
+
+    private void showError(String message, Exception e) {
+        progressBar.setVisibility(View.GONE);
+        noSavedNewsMessage.setText(message);
+        noSavedNewsMessage.setVisibility(View.VISIBLE);
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        Log.e(TAG, message, e);
+    }
+
+    @Override
+    public void onNewsClick(Serializable newsItem) {
+        if (hostActivity != null) {
+            NewsArticleFragment newsArticleFragment = NewsArticleFragment.newInstance(newsItem);
+            hostActivity.replaceFragment(newsArticleFragment);
+        } else {
+            Toast.makeText(getContext(), "Error: Host activity not found.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (currentUser != null) {
+            fetchSavedNews();
+        }
     }
 }

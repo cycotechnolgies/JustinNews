@@ -2,6 +2,7 @@ package com.cycotechnologies.justinnews;
 
 import android.content.Context;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +21,12 @@ import java.util.List;
 public class NewsForYouAdaptor extends RecyclerView.Adapter<NewsForYouAdaptor.NewsViewHolder> {
     private List<NewsForYouItem> newsForYouList;
     private Context context;
+    private OnNewsClickListener listener;
 
-    public NewsForYouAdaptor(List<NewsForYouItem> newsList, Context context) {
+    public NewsForYouAdaptor(List<NewsForYouItem> newsList, Context context, OnNewsClickListener listener) {
         this.newsForYouList = newsList;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,9 +43,13 @@ public class NewsForYouAdaptor extends RecyclerView.Adapter<NewsForYouAdaptor.Ne
         holder.title.setText(news.getTitle());
         holder.subTitle.setText(news.getSubTitle());
         holder.dateCreated.setText(news.getDateCreated());
-        Log.d("ImageDebug", "Loading image from URL: " + news.getImageUrl());
         Picasso.get().load(news.getImageUrl()).into(holder.image);
-        Log.d("NewsDebug", "Date: " + news.getDateCreated());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onNewsClick(news);
+            }
+        });
     }
 
     @Override

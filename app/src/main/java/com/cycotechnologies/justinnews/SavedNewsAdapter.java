@@ -1,15 +1,11 @@
 package com.cycotechnologies.justinnews;
 
 import android.content.Context;
-
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,13 +14,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class TrendingNewsAdapter extends RecyclerView.Adapter<TrendingNewsAdapter.NewsViewHolder> {
-    private List<TrendNews> TrendingList;
+public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.NewsViewHolder> {
+
+    private List<SavedNews> savedNewsList;
     private Context context;
     private OnNewsClickListener listener;
 
-    public TrendingNewsAdapter(List<TrendNews> newsList, Context context, OnNewsClickListener listener) {
-        this.TrendingList = newsList;
+    // Constructor now takes OnNewsItemClickListener
+    public SavedNewsAdapter(List<SavedNews> savedNewsList, Context context, OnNewsClickListener listener) {
+        this.savedNewsList = savedNewsList;
         this.context = context;
         this.listener = listener;
     }
@@ -32,18 +30,28 @@ public class TrendingNewsAdapter extends RecyclerView.Adapter<TrendingNewsAdapte
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.news_card, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.news_item_card, parent, false);
         return new NewsViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
 
-        TrendNews news = TrendingList.get(position);
+        SavedNews news = savedNewsList.get(position);
         holder.title.setText(news.getTitle());
+        holder.subTitle.setText(news.getSubTitle());
         holder.dateCreated.setText(news.getDateCreated());
-        Picasso.get().load(news.getImageUrl()).into(holder.image);
 
+        if (news.getImageUrl() != null && !news.getImageUrl().isEmpty()) {
+            Picasso.get().load(news.getImageUrl())
+                    .placeholder(R.drawable.ic_profile_background)
+                    .error(R.drawable.ic_profile_background)
+                    .into(holder.image);
+        } else {
+            holder.image.setImageResource(R.drawable.ic_profile_background);
+        }
+
+        // Set the click listener using the global interface
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onNewsClick(news);
@@ -53,17 +61,18 @@ public class TrendingNewsAdapter extends RecyclerView.Adapter<TrendingNewsAdapte
 
     @Override
     public int getItemCount() {
-        return TrendingList.size();
+        return savedNewsList.size();
     }
 
-    public class NewsViewHolder extends RecyclerView.ViewHolder {
-        TextView title, dateCreated;
+    public static class NewsViewHolder extends RecyclerView.ViewHolder {
+        TextView title, dateCreated, subTitle;
         ImageView image;
 
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.newsTitle);
-            dateCreated = itemView.findViewById(R.id.dateCreated);
+            subTitle = itemView.findViewById(R.id.newsSubTitle);
+            dateCreated = itemView.findViewById(R.id.newsDate);
             image = itemView.findViewById(R.id.newsImage);
         }
     }

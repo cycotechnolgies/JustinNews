@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/rounded_dialog_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm Logout"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_horizontal"
+        android:text="Are you sure you want to log out?"
+        android:textColor="@color/colorOnBackground"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/cancelLogoutButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/btngray"
+            android:text="Cancel"
+            android:textColor="@color/colorOnBackground"
+            android:textStyle="bold"
+            app:cornerRadius="@dimen/round_btn" />
+
+        <Button
+            android:id="@+id/confirmLogoutButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Sign Out"
+            android:textColor="@color/colorOnPrimary"
+            android:textStyle="bold"
+            app:cornerRadius="@dimen/round_btn" />
+    </LinearLayout>
+
+</LinearLayout>

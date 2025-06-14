@@ -4,21 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-// import android.view.View; // Unused
-// import android.widget.Switch; // Unused
 
-// import androidx.activity.EdgeToEdge; // Unused
 import androidx.appcompat.app.AppCompatActivity;
-// import androidx.core.graphics.Insets; // Unused
-// import androidx.core.view.ViewCompat; // Unused
-// import androidx.core.view.WindowInsetsCompat; // Unused
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.cycotechnologies.justinnews.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener {
 
     public static final String SHARED_PREFS = "shared_prefs";
     public static final String EMAIL_KEY = "email_key";
@@ -61,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new ProfileFragment());
             }
 
-            return true; // Return true to indicate that the item selection has been handled
+            return true;
         });
 
     }
@@ -70,14 +64,16 @@ public class MainActivity extends AppCompatActivity {
      * Replaces the current fragment in the frame_views container with the specified fragment.
      * @param fragment The new fragment to display.
      */
-    private void replaceFragment(Fragment fragment){
-        // Get the FragmentManager to manage fragments
+    public void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        // Begin a FragmentTransaction to perform fragment operations
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        // Replace the existing fragment in R.id.frame_views with the new fragment
         fragmentTransaction.replace(R.id.frame_views, fragment);
-        // Commit the transaction to apply the changes
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void navigateToAboutUs() {
+        replaceFragment(AboutUsFragment.newInstance());
     }
 }

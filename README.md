@@ -1,3 +1,4 @@
+
 # JustinNews
 
 JustinNews is an Android application developed by CycoTechnologies that provides a platform for users to sign up, log in, and access news content. The app uses Firebase for authentication and user data management.
@@ -33,7 +34,7 @@ JustinNews is an Android application developed by CycoTechnologies that provides
 3. **Configure Firebase:**
    - Create a new Firebase project at [Firebase Console](https://console.firebase.google.com/).
    - Register your Android app and download the `google-services.json` file.
-   - Place `google-services.json` in `app/` directory.
+   - Place `google-services.json` in the `app/` directory.
 
 4. **Build the Project:**  
    Sync Gradle and build the project.
@@ -44,11 +45,14 @@ JustinNews is an Android application developed by CycoTechnologies that provides
 ### Project Structure
 
 - `app/src/main/java/com/cycotechnologies/justinnews/`
-  - `MainActivity.java`: Home activity after login.
+  - `HomeFragment.java`: Home activity after login.
   - `OnboardActivity.java`: Handles onboarding logic.
   - `LoginActivity.java`: Handles user login.
   - `SignupActivity.java`: Handles user registration and validation.
   - `SplashActivity.java`: Splash screen implementation.
+  - `FeaturedFragment.java`: Catagary news screen implementation.
+  - `SavedFragment.java`: Saved news screen implementation (User Saved News for read later).
+  - `ProfileFragment.java`: User Profile screen implementation.
   - `validator.java`: Static methods for input validation.
 
 ## Usage

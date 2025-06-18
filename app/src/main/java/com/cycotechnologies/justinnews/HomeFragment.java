@@ -1,6 +1,7 @@
 package com.cycotechnologies.justinnews;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.inputmethod.InputMethodManager; // Good for hiding keyboard
 
@@ -25,7 +27,9 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +53,7 @@ public class HomeFragment extends Fragment implements OnNewsClickListener {
     private List<NewsForYouItem> newsForYouList; // Still used for "News For You" section
     private TextInputEditText searchBar;
     private Button searchButton;
+    private TextView GreetingText;
 
     private MainActivity hostActivity;
 
@@ -106,6 +111,7 @@ public class HomeFragment extends Fragment implements OnNewsClickListener {
         searchButton = view.findViewById(R.id.searchBtn);
         newsForYouRecyclerView = view.findViewById(R.id.newsforyouView);
         newsForYouRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        GreetingText = view.findViewById(R.id.greetText);
 
         trendingAdaptor = new TrendingNewsAdapter(TrendingList, getContext(), this);
         viewPager.setAdapter(trendingAdaptor);
@@ -156,6 +162,7 @@ public class HomeFragment extends Fragment implements OnNewsClickListener {
         newsForYouAdapter = new NewsForYouAdaptor(newsForYouList, getContext(), this);
         newsForYouRecyclerView.setAdapter(newsForYouAdapter);
         fetchNewsForYou(); // Call without a search text parameter now
+        displayGreeting();
 
         return view;
     }
@@ -186,6 +193,22 @@ public class HomeFragment extends Fragment implements OnNewsClickListener {
                             }
                         }
                 );
+    }
+
+    // --- New method to display the greeting ---
+    private void displayGreeting() {
+        if (getContext() == null || GreetingText == null) {
+            return; // Ensure context and TextView are available
+        }
+
+        // Use the same SHARED_PREFS name as in LoginActivity
+        SharedPreferences sharedPref = getContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        // Use the same USERNAME_KEY as in LoginActivity
+        String username = sharedPref.getString("USERNAME", "Guest"); // "Guest" is the default value if "USERNAME" key not found
+
+        String greetingPrefix;
+        greetingPrefix = "Hi";
+        GreetingText.setText(String.format(Locale.getDefault(), "%s, %s !", greetingPrefix, username));
     }
 
     @Override

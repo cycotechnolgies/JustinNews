@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/greetText4"
+            android:id="@+id/greetText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -47,7 +47,7 @@
             app:layout_constraintBottom_toTopOf="@+id/newsScroll"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/greetText4">
+            app:layout_constraintTop_toBottomOf="@+id/greetText">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/search_bar"

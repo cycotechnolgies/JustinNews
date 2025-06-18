@@ -1,7 +1,11 @@
 
+![App image](https://github.com/user-attachments/assets/7551227f-f987-4c44-bb6a-916365262016)
+
 # JustinNews
 
 JustinNews is an Android application developed by CycoTechnologies that provides a platform for users to sign up, log in, and access news content. The app uses Firebase for authentication and user data management.
+- **UI/UX Design :** [Figma Design](https://www.figma.com/design/QgXgTpYMN0KqZSxrHWVxAb/JustIn-News-App?node-id=0-1&t=NLMZPJW4rRpn0QGR-1)
+- **Prototype :** [Figma Prototype](https://www.figma.com/proto/QgXgTpYMN0KqZSxrHWVxAb/JustIn-News-App?node-id=0-1&t=NLMZPJW4rRpn0QGR-1)
 
 ## Features
 
